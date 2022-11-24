@@ -1,18 +1,13 @@
 # Experiment--09-Configuring-UART-in-LPC2148-for-serial-data-transmission-
 
-Name :	
-Roll no 
-Date of experiment :
+Name :	Keerthika N
+Roll no : 212221230049
+Date of experiment : 24/11/2022
 
-
-
- Date: 
-### Configuring UART in LPC2148 for serial data transmission 
-
-### Aim: 
+## Aim: 
 To configure internal UART for transferring serial data and display it on the Virtual terminal  
 Components required: Proteus ISIS professional suite, Kiel μ vision 5 Development environment 
-### Theory: 
+## Theory: 
 	The UART Protocol uses only two wires (or pins in a device like microcontroller) to transmit the data. In that, one is for transmitting the data and the pin is called TX pin in the device. The other pin is used to receive the data and is called RX pin.
 As UART is a serial communication, the data is transmitted in a series of packets. Usually, a packet consists of 4 parts: a start bit, the actual data, a parity bit and stop bits. The following image shows a typical structure of the data packet in UART.
 ![image](https://user-images.githubusercontent.com/36288975/203727146-383ce4b4-677b-44c3-bb13-a9e203950760.png)
@@ -46,30 +41,47 @@ UART0 Line Control Register (U0LCR): The Line Control Register is used to set th
 
 ![image](https://user-images.githubusercontent.com/36288975/203729175-35823e84-cdad-4cd2-8334-2a7477de528f.png)
 
-## Figure -02 UART interface virtual terminal
+### Figure -02 UART interface virtual terminal
 
-### Kiel - Program 
+## Kiel - Program 
+```
+#include <LPC213x.H>              // LPC21xx definitions                      */
+char a;
+void uart0_init(){
+  PINSEL0 = 0x00000005;           // Enable RxD0 and TxD0                     */
+  U0LCR = 0x83;                   // 8 bits, no Parity, 1 Stop bit            */
+  U0DLL = 97;                     // 9600 Baud Rate @ 15MHz VPB Clock         */
+  U0LCR = 0x03;                   // DLAB = 0                                 */
+}
+void uart0_putc(char c){
+ while(!(U0LSR & 0x20)); // Wait until UART0 ready to send character  
+ U0THR = c; // Send character
+}
+int uart0_getc (void)  {                     
+  while (!(U0LSR & 0x01));
+  return (U0RBR);
+}
+int main (void)  {                
+  uart0_init();      
+  while (1) {                          
+  a=uart0_getc();
+   uart0_putc(a);
+  }                               
+}
+```
+## Output :
+### Before Stimulation:
+![WhatsApp Image 2022-11-24 at 8 37 33 PM (1)](https://user-images.githubusercontent.com/93427089/203817512-4ba47a64-a73a-4ec3-8545-38f01b0e9524.jpeg)
+
+### After Stimulation:
+![WhatsApp Image 2022-11-24 at 8 37 33 PM](https://user-images.githubusercontent.com/93427089/203817539-77db1d52-4529-43d4-b93a-fdce0934b3b7.jpeg)
+
+### Circuit Diagram:
+![WhatsApp Image 2022-11-24 at 8 37 34 PM](https://user-images.githubusercontent.com/93427089/203817475-800eb00f-68e5-48e9-9226-e234379c5534.jpeg)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Result :
+## Result :
 UART is programmed for transmitting serial data on virtual terminal  
 
-### Output screen shots :
+
 
