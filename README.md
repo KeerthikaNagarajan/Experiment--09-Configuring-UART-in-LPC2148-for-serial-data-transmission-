@@ -1,7 +1,9 @@
 # Experiment--09-Configuring-UART-in-LPC2148-for-serial-data-transmission-
 
 Name :	Keerthika N
+
 Roll no : 212221230049
+
 Date of experiment : 24/11/2022
 
 ## Aim: 
